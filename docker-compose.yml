@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: metabase
+      POSTGRES_USER: metabase
+      POSTGRES_PASSWORD: metabase
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  metabase:
+    image: metabase/metabase:latest
+    environment:
+      MB_DB_TYPE: "postgres"
+      MB_DB_DBNAME: "metabase"
+      MB_DB_PORT: "5432"
+      MB_DB_USER: "metabase"
+      MB_DB_PASS: "metabase"
+      MB_DB_HOST: "db"
+
+      # Required for API-based setup
+      MB_SETUP_TOKEN: "mysecrettoken123"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 60s
+      timeout: 5s
+      retries: 20
+
+  metabase-setup:
+    image: curlimages/curl:latest
+    depends_on:
+      metabase:
+        condition: service_healthy
+    environment:
+      MB_USER_EMAIL: admin@example.com
+      MB_USER_PASSWORD: SuperStrongPassword
+    volumes:
+      - ./metabase-setup.sh:/setup.sh
+    entrypoint: ["/bin/sh", "/setup.sh"]
+
+volumes:
+  db-data:

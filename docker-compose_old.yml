@@ -1,0 +1,56 @@
+services:
+  db:
+    image: pgduckdb/pgduckdb:17-main
+    restart: always
+    volumes:
+      - db-data:${DB_DATA_DIR}
+    environment:
+      - PGDATA=${DB_DATA_DIR}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    restart: always
+    environment:
+      MB_DB_TYPE: "postgres"
+      MB_DB_DBNAME: "${DB_NAME}"
+      MB_DB_PORT: "5432"
+      MB_DB_USER: "${DB_USER}"
+      MB_DB_PASS: "${DB_PASSWORD}"
+      MB_DB_HOST: "db"
+      MB_PASSWORD_COMPLEXITY: strong
+      MB_PASSWORD_LENGTH: 10
+      JAVA_TIMEZONE: "${MB_JAVA_TIMEZONE}"
+    ports:
+      - "${MB_PORT}:3000"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      default:
+        ipv4_address: 172.16.200.30
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.200.0/24"
+
+volumes:
+  db-data:
