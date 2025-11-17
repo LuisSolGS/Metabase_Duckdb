@@ -33,7 +33,7 @@ STATUS=$(curl http://metabase:3000/api/database/ \
   --header "X-Metabase-Session: $ID" \
   --data "{
     \"engine\": \"postgres\",
-    \"name\": \"My New Database\",
+    \"name\": \"$MB_DB_DBNAME\",
     \"details\": {
       \"host\": \"db\",
       \"port\": 5432,
