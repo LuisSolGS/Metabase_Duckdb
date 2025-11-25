@@ -39,7 +39,7 @@ MB_LAST_NAME=User
 MB_TOKEN=mysecrettoken123
 ```
 
-## ▶️ Starting the Environment
+## Starting the Environment
 
 Start everything with:
 
