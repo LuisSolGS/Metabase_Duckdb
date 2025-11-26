@@ -1,4 +1,4 @@
-# Metabase + PostgreSQL with duckdb — Automated Environment
+# Metabase + PostgreSQL with duckdb
 
 This repository provides a fully automated environment for running **Metabase** connected to a **pg_duckdb** database, including automatic configuration through the `metabase-setup.sh` script.
 
