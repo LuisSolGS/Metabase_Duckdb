@@ -2,11 +2,11 @@
 # Define the API endpoint
 echo 'Metabase is up. Running setup...';
 
-curl -X POST http://metabase:3000/api/setup -H 'Content-Type: application/json' \
--d "{
-  \"token\":\"$MB_TOKEN\",
-  \"prefs\":{\"site_name\":\"Metabase\"},\"user\":{\"email\":\"$MB_USER_EMAIL\",\"password\":\"$MB_USER_PASSWORD\",\"first_name\":\"$MB_FIRST_NAME\",\"last_name\":\"$MB_LAST_NAME\"}
-  }";
+echo "Session token acquired: $MB_TOKEN";
+
+curl -X POST http://metabase:3000/api/setup \
+  -H 'Content-Type: application/json' \
+  -d "{\"token\":\"$MB_TOKEN\",\"prefs\":{\"site_name\":\"Metabase\"},\"user\":{\"email\":\"$MB_USER_EMAIL\",\"password\":\"$MB_USER_PASSWORD\",\"first_name\":\"$MB_FIRST_NAME\",\"last_name\":\"$MB_LAST_NAME\"}}"
 
 echo 'Setup complete.';
 
