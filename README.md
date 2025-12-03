@@ -21,15 +21,14 @@ Set your variables for PostgreSQL and Metabase setup. Example:
 DB_NAME=pgduckdb
 DB_USER=pgduckdb
 DB_PASSWORD=adminDuckdb
+DB_DATA_DIR=/var/lib/postgresql/data
+DB_PORT=54321
 
 MB_PORT=3300
 MB_JAVA_TIMEZONE=America/Sao_Paulo
 
 MB_DB_TYPE=postgres
 MB_DB_DBNAME=pgduckdb
-MB_DB_PORT=5432
-MB_DB_USER=pgduckdb
-MB_DB_PASS=adminDuckdb
 MB_DB_HOST=postgres
 
 MB_EMAIL=admin@example.com
